@@ -1,0 +1,26 @@
+/* Выведите только чётные числа от 1 до 10.
+Пример: 2,4,6,8,10 */
+
+DROP PROCEDURE IF EXISTS proc1;
+
+DELIMITER $$
+CREATE PROCEDURE proc1()
+BEGIN
+DECLARE n INT DEFAULT 1;
+DECLARE result VARCHAR(25) DEFAULT '';
+
+WHILE n < 11 DO
+	IF n % 2 = 0 THEN
+		SET result = CONCAT(result, ' ', n);
+        SET n = n + 1;
+    ELSE
+		SET n = n + 1;
+    
+    END IF;
+END WHILE;
+
+SELECT result;
+END$$
+DELIMITER ;
+
+CALL proc1;
