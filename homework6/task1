@@ -1,0 +1,42 @@
+/* Создайте функцию, которая принимает кол-во сек и формат их в кол-во дней часов.
+Пример: 123456 ->'1 days 10 hours 17 minutes 36 seconds ' */
+
+DROP FUNCTION IF EXISTS fun1;
+
+DELIMITER $$
+CREATE FUNCTION fun1(num INT)
+RETURNS VARCHAR(100)
+DETERMINISTIC
+BEGIN
+	DECLARE day INT DEFAULT 86400; -- кол-во секунд в одном дне
+    DECLARE hour INT DEFAULT 3600; -- кол-во секунд в одном часу
+    DECLARE minute INT DEFAULT 60; -- кол-во секунд в одной минуте
+    DECLARE result_day INT;
+    DECLARE result_hour INT;
+    DECLARE result_minute INT;
+    DECLARE result VARCHAR(50);
+    
+	IF num >= day THEN
+		SET result_day = num DIV day;
+        SET num = num - (day * result_day);
+    END IF;    
+        
+	IF num >= hour THEN
+		SET result_hour = num DIV hour;
+        SET num = num - hour * result_hour;
+	END IF;
+	
+	IF num >= minute THEN
+		SET result_minute = num DIV minute;
+		SET num = num - (minute * result_minute);
+    END IF; 
+    
+    SET result = CONCAT (result_day, ' days ', result_hour, ' hours ', result_minute,
+    ' minutes ', num, ' secs ');
+    
+    RETURN result;
+        
+END$$
+DELIMITER ;
+
+SELECT fun1(123456);
